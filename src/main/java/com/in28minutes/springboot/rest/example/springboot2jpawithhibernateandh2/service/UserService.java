@@ -31,6 +31,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private DepartmentRepo departmentRepo;
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
@@ -50,16 +51,11 @@ public class UserService implements UserDetailsService {
 
         //Test
         Employee employee = new Employee();
-        employee.setName("FirstName");
-
+        employee.setFirstName("Alex");
         Department department = new Department();
         department.setDepartmentName("DepName");
-
-        department.setEmployee(employee);
+        department.addEmployee(employee);
         departmentRepo.save(department);
-
-        employeeRepo.save(employee);
-
         //Test
 
         return true;

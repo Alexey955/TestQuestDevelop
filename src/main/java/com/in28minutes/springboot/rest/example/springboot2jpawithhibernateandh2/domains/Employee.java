@@ -6,13 +6,12 @@ import javax.persistence.*;
 @Table(name = "employee")
 public class Employee {
 
-    private Long employeeid;
-    private String name;
-    private Long departmentId;
-    private Department department;
+    private Long id;
+    private String firstName;
 
-    @OneToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "department_id")
+    private Department department;
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
     public Department getDepartment() {
         return this.department;
     }
@@ -23,29 +22,21 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "employee_id", nullable = false, insertable = true, updatable = true)
-    public Long getEmployeeid() {
-        return employeeid;
+    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    public Long getId() {
+        return id;
     }
 
-    public void setEmployeeid(Long employeeid) {
-        this.employeeid = employeeid;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    //Test
-
-    //Test
-
-    public Employee() {
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getName() {
-        return name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 }
 

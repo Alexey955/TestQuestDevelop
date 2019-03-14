@@ -1,42 +1,41 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "department")
 public class Department {
 
-    private Long departmentId;
+    private Long id;
     private String departmentName;
-    private Employee employee;
+    private Long employeeId;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "department")
-    public Employee getEmployee() {
-        return employee;
+    private Set<Employee> employees = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    public Set<Employee> getEmployees() {
+        return this.employees;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    public void addEmployee(Employee employee) {
         employee.setDepartment(this);
-        this.employee = employee;
+        this.employees.add(employee);
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "department_id", nullable = false, insertable = true, updatable = true)
-    public Long getDepartmentId() {
-        return departmentId;
+    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    public Long getId() {
+        return id;
     }
 
-    public void setDepartmentId(Long departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    //Test
-
-    //Test
-
-
-    public Department() {
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDepartmentName() {
