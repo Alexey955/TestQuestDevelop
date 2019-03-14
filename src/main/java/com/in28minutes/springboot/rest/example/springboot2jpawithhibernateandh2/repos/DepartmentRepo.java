@@ -8,4 +8,6 @@ import java.util.List;
 public interface DepartmentRepo extends CrudRepository<Department, Long> {
     @Override
     List<Department> findAll();
+
+    Department findByDepartmentName(String departmentName);
 }

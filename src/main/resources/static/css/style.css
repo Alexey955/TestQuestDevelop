@@ -150,6 +150,11 @@
     position: relative;
     left: 18px;
 }
+.stringLog {
+    /*width: 180px;*/
+    position: relative;
+    left: 52px;
+}
 
 .inpRadioLog {
     width: 180px;

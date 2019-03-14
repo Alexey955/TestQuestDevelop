@@ -21,9 +21,9 @@
                     </td>
                     <td>
                         <div align="center">
-                            <b>Employeer:</b>
+                            <b>Employee:</b>
                         </div>
-                        <input form="registerForm" type="radio" class="inpRadioLog" value="Employeer" name="radioDel"/>
+                        <input form="registerForm" type="radio" class="inpRadioLog" value="Employee" name="radioDel"/>
                     </td>
                 </tr>
                 <tr class="trLoginPage">
@@ -44,9 +44,9 @@
                 <tr class="trLoginPage">
                     <td>
                         <div align="center">
-                            <b>Department number:</b>
+                            <b>First Name:</b>
                         </div>
-                        <input form="registerForm" class="inpTextLog" type="text" name="departmentId"/>
+                        <input form="registerForm" class="inpTextLog" type="text" name="firstName"/>
                         <#--<#if passwordError??><div align="center" class="invalid-feedback">${passwordError}</div></#if>-->
                     </td>
                     <td>
@@ -56,7 +56,25 @@
                         <input form="registerForm" type="radio" class="inpRadioLog" value="Admin" name="radioDel"/>
                     </td>
                 </tr>
-                <tr>
+                <tr class="trLoginPage">
+                    <td colspan="2">
+                        <div class="stringLog">
+                            <b>Last Name:</b>
+                        </div>
+                        <input form="registerForm" class="inpTextLog" type="text" name="lastName"/>
+                        <#--<#if passwordError??><div align="center" class="invalid-feedback">${passwordError}</div></#if>-->
+                    </td>
+                </tr>
+                <tr class="trLoginPage">
+                    <td colspan="2">
+                        <div class="stringLog">
+                            <b>Department Name:</b>
+                        </div>
+                        <input form="registerForm" class="inpTextLog" type="text" name="departmentName"/>
+                        <#--<#if passwordError??><div align="center" class="invalid-feedback">${passwordError}</div></#if>-->
+                    </td>
+                </tr>
+                <tr class="trLoginPage">
                     <td width="119px">
                         <button form="toLoginPage" class="buttLogPage">Back</button>
                     </td>

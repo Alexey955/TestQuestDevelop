@@ -3,38 +3,22 @@ package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2
 import javax.persistence.*;
 
 @Entity
-@Table(name = "chief")
-public class Chief {
+@Table(name = "admin")
+public class Admin {
 
+    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
 
-    private Department department;
-    @ManyToOne
-    @JoinColumn(name = "department_id", referencedColumnName = "id")
-    public Department getDepartment() {
-        return this.department;
+    public Admin() {
     }
 
-    public Chief() {
-    }
-
-    public Chief(Long id, String firstName, String lastName) {
+    public Admin(Long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {

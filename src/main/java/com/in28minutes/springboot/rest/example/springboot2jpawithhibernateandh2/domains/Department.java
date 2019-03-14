@@ -18,6 +18,14 @@ public class Department {
         return this.employees;
     }
 
+    public Department() {
+    }
+
+    public Department(Long id, String departmentName) {
+        this.id = id;
+        this.departmentName = departmentName;
+    }
+
     public void setEmployees(Set<Employee> employees) {
         this.employees = employees;
     }
@@ -28,7 +36,7 @@ public class Department {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     public Long getId() {
         return id;
@@ -45,4 +53,22 @@ public class Department {
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
     }
+
+    //Test
+    private Long chiefId;
+    private Set<Chief> chiefs = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
+    public Set<Chief> getChiefs() {
+        return this.chiefs;
+    }
+
+    public void setChiefs(Set<Chief> chiefs) {
+        this.chiefs = chiefs;
+    }
+
+    public void addChief(Chief chief) {
+        chief.setDepartment(this);
+        this.chiefs.add(chief);
+    }
+    //Test
 }

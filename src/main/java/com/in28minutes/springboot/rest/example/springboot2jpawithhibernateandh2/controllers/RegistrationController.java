@@ -1,5 +1,6 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.controllers;
 
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Employee;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.User;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,11 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model, @RequestParam String radioDel, @RequestParam int departmentId) {
+    public String addUser(User user, Model model, @RequestParam String radioDel,
+                          @RequestParam String departmentName, @RequestParam String firstName,
+                          @RequestParam String lastName) {
 
-        System.out.println("radioDel = " + radioDel);
-
-        if (!userService.addUser(user)) {
+        if (!userService.addUser(user, radioDel, firstName, lastName, departmentName)) {
             model.addAttribute("usernameError", "User " + user.getUsername() +" exists.");
             return "registrationPage";
         }
