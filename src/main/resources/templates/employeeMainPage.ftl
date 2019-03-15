@@ -51,8 +51,8 @@
         </tr>
         <tr class="trMainTable">
             <td>
-                <form target="mainFrame" method="get" action="/lastChance">
-                    <button class="buttons">MAYBE!!!</button>
+                <form method="get">
+                    <button class="buttons">The same</button>
                 </form>
             </td>
         </tr>

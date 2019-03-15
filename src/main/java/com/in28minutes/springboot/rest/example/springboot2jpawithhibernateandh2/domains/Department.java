@@ -36,7 +36,6 @@ public class Department {
     }
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     public Long getId() {
         return id;
@@ -54,7 +53,6 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    //Test
     private Long chiefId;
     private Set<Chief> chiefs = new HashSet<>();
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
@@ -70,5 +68,4 @@ public class Department {
         chief.setDepartment(this);
         this.chiefs.add(chief);
     }
-    //Test
 }

@@ -8,6 +8,7 @@ import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("pickedUser")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
     @Autowired
@@ -42,7 +44,7 @@ public class AdminController {
     }
 
     @GetMapping("/showUserList")
-    public String showUserList(@AuthenticationPrincipal User user, Model model) {
+    public String showUserList(Model model) {
         List<Person> personList = new ArrayList<>();
 
         List<Chief> chiefList = chiefRepo.findAll();
@@ -70,7 +72,7 @@ public class AdminController {
     }
 
     @GetMapping("/createUser")
-    public String createUser(@AuthenticationPrincipal User user, Model model) {
+    public String createUser() {
         return "createUserPage";
     }
 
@@ -81,7 +83,6 @@ public class AdminController {
 
         if (!userService.addUser(user, radioDel, firstName, lastName, departmentName)) {
             model.addAttribute("usernameError", "User " + user.getUsername() +" exists.");
-//            return "registrationPage";
         }
         return "wallpaperPage";
     }
@@ -106,36 +107,8 @@ public class AdminController {
     }
 
     @PostMapping("/changeUser")
-    public String changeUser(/*User userNew, Model model,*/ /*@RequestParam String radioDel,*/
-                             /*@RequestParam String departmentName,*/ @RequestParam String firstName,
-                             @RequestParam String lastName,@ModelAttribute("pickedUser") User userOld) {
-
-//        Department department = departmentRepo.findByDepartmentName(departmentName);
-
-//        switch (radioDel){
-//            case "Employee":
-//                Employee employee = employeeRepo.findFirstById(userOld.getId());
-//                employee.setFirstName(firstName);
-//                employee.setLastName(lastName);
-//                if(department != null){
-//                    department.addEmployee(employee);
-//                }else {
-//                    long maxDepartamentId = departmentRepo.findMaxId();
-//                    Long freeDepartmentId = null;
-//                    for(long i = 1; i <= maxDepartamentId; i++){
-//                        if(departmentRepo.findFirstById(i) == null){
-//                            freeDepartmentId = i;
-//                        }
-//                    }
-//                    if(freeDepartmentId == null){
-//                        freeDepartmentId = maxDepartamentId + 1000;
-//                    }
-//                    department = new Department(freeDepartmentId, departmentName);
-//                    department.addEmployee(employee);
-//                }
-//                departmentRepo.save(department);
-//                break;
-//        }
+    public String changeUser(@RequestParam String firstName, @RequestParam String lastName,
+                             @ModelAttribute("pickedUser") User userOld) {
 
         switch (userOld.getRoles().iterator().next().toString()){
             case "EMPLOYEE":
@@ -152,7 +125,6 @@ public class AdminController {
                 chiefRepo.save(chief);
                 break;
         }
-
         return "wallpaperPage";
     }
 

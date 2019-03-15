@@ -32,7 +32,6 @@ public class Employee {
     }
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     public Long getId() {
         return id;
@@ -66,12 +65,12 @@ public class Employee {
         return id.equals(employee.id) &&
                 firstName.equals(employee.firstName) &&
                 lastName.equals(employee.lastName) &&
-                department.equals(employee.department);
+                department.getDepartmentName().equals(employee.department.getDepartmentName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, department);
+        return Objects.hash(id, firstName, lastName, department.getDepartmentName());
     }
 }
 

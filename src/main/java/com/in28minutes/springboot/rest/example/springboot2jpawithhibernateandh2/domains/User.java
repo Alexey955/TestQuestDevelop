@@ -1,17 +1,20 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains;
 
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.UserRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "user_table")
-//@Table(name = "user_table", schema = "JOWL")
 public class User implements UserDetails {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
