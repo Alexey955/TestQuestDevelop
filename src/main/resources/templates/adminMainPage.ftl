@@ -28,13 +28,6 @@
             </form>
         </td>
     </tr>
-    <#--<tr class="trMainTable">-->
-        <#--<td>-->
-            <#--<form target="mainFrame" action="/showFullStageAccuracy" method="get">-->
-                <#--<button class="buttons">Stage accuracy</button>-->
-            <#--</form>-->
-        <#--</td>-->
-    <#--</tr>-->
     <tr class="trMainTable">
         <td>
             <form method="get">

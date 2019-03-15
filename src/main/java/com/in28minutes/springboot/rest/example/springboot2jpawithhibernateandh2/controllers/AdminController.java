@@ -5,6 +5,7 @@ import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.DepartmentRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.EmployeeRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.UserRepo;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,7 +50,7 @@ public class AdminController {
             Person person = new Person(chief.getId(), chief.getFirstName(), chief.getLastName());
             String departmentName = departmentRepo.findDepartmentNameById(chief.getDepartment().getId());
             person.setDepartmentName(departmentName);
-            person.setRole(userRepo.findFirstById(chief.getId()).getRoles().toString());
+            person.setRole(Roles.CHIEF.toString());
 
             personList.add(person);
         }
@@ -59,7 +60,7 @@ public class AdminController {
             Person person = new Person(employee.getId(), employee.getFirstName(), employee.getLastName());
             String departmentName = departmentRepo.findDepartmentNameById(employee.getDepartment().getId());
             person.setDepartmentName(departmentName);
-            person.setRole(userRepo.findFirstById(employee.getId()).getRoles().toString());
+            person.setRole(Roles.EMPLOYEE.toString());
 
             personList.add(person);
         }
