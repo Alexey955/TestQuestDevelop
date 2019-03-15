@@ -9,4 +9,6 @@ import java.util.List;
 public interface EmployeeRepo extends CrudRepository<Employee, Long> {
     @Override
     List<Employee> findAll();
+
+    Employee findFirstById(Long id);
 }

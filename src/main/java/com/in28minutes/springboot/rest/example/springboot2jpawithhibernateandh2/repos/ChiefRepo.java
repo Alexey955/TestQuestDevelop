@@ -8,4 +8,8 @@ import java.util.List;
 public interface ChiefRepo extends CrudRepository<Chief, Integer> {
     @Override
     List<Chief> findAll();
+
+    Chief findFirstById(Long id);
+
+    void deleteById(Long id);
 }

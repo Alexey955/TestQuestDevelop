@@ -6,6 +6,7 @@ import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.User;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,20 +30,16 @@ public class MainController {
     private ChiefRepo chiefRepo;
 
     @GetMapping("/")
-    public String decideUserOrAdmin(Model model) {
+    public String decideUserOrAdmin(@AuthenticationPrincipal User user, Model model) {
 
-        List<User> studentList = userRepo.findAll();
-        model.addAttribute("myDate", studentList);
-        return "mainPage";
-    }
+        if(user.getRoles().iterator().next().toString().equals("ADMIN")) {
+            return "adminMainPage";
 
-    @GetMapping("/1")
-    public String one(Model model) {
+        } else if(user.getRoles().iterator().next().toString().equals("EMPLOYEE")){
+            return "employeeMainPage";
 
-        List<User> studentList = userRepo.findAll();
-        List<Employee> employeeList = employeeRepo.findAll();
-        List<Chief> chiefList = chiefRepo.findAll();
-        List<Department> departmentList = departmentRepo.findAll();
-        return "mainPage";
+        } else{
+            return "chiefMainPage";
+        }
     }
 }
