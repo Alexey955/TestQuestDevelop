@@ -1,14 +1,12 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains;
 
-import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.UserRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,7 +17,12 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Length(min = 5, message = "Less than 5 symbols.")
+    @Length(max = 15, message = "More than 15 symbols.")
     private String username;
+
+    @Length(min = 5, message = "Less than 5 symbols.")
     private String password;
 
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)

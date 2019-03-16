@@ -3,7 +3,6 @@ package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.*;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.AdminRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.DepartmentRepo;
-import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.EmployeeRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.UserRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,6 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private EmployeeRepo employeeRepo;
-
-    @Autowired
     private DepartmentRepo departmentRepo;
 
     @Autowired
@@ -38,26 +34,26 @@ public class UserService implements UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
-    public boolean addUser(User user, String role, String firstName, String lastName, String departmentName) {
+    public boolean addUser(User user, Person person) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
         if (userFromDb != null) {
             return false;
         }
 
-        Department department = departmentRepo.findByDepartmentName(departmentName);
+        Department department = departmentRepo.findByDepartmentName(person.getDepartmentName());
 
-        switch (role) {
+        switch (person.getRole()) {
             case "Employee":
                 user.setRoles(Collections.singleton(Roles.EMPLOYEE));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Employee employee = new Employee(user.getId(), firstName, lastName);
+                Employee employee = new Employee(user.getId(), person.getFirstName(), person.getLastName());
 
                 if(department != null){
                     department.addEmployee(employee);
                 }else {
-                    department = new Department(user.getId(), departmentName);
+                    department = new Department(user.getId(), person.getDepartmentName());
                     department.addEmployee(employee);
                 }
                 departmentRepo.save(department);
@@ -67,12 +63,12 @@ public class UserService implements UserDetailsService {
                 user.setRoles(Collections.singleton(Roles.CHIEF));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Chief chief = new Chief(user.getId(), firstName, lastName);
+                Chief chief = new Chief(user.getId(), person.getFirstName(), person.getLastName());
 
                 if(department != null){
                     department.addChief(chief);
                 }else {
-                    department = new Department(user.getId(), departmentName);
+                    department = new Department(user.getId(), person.getDepartmentName());
                     department.addChief(chief);
                 }
                 departmentRepo.save(department);
@@ -82,7 +78,7 @@ public class UserService implements UserDetailsService {
                 user.setRoles(Collections.singleton(Roles.ADMIN));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Admin admin = new Admin(user.getId(), firstName, lastName);
+                Admin admin = new Admin(user.getId(), person.getFirstName(), person.getLastName());
                 adminRepo.save(admin);
                 break;
         }

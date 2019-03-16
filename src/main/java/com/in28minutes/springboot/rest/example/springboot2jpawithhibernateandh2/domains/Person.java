@@ -1,10 +1,21 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains;
 
+import org.hibernate.validator.constraints.Length;
+
 public class Person {
     private Long id;
+    @Length(min = 5, message = "Less than 5 symbols.")
+    @Length(max = 15, message = "More than 15 symbols.")
     private String firstName;
+
+    @Length(min = 5, message = "Less than 5 symbols.")
+    @Length(max = 15, message = "More than 15 symbols.")
     private String lastName;
+
+    @Length(min = 5, message = "Less than 5 symbols.")
+    @Length(max = 15, message = "More than 15 symbols.")
     private String departmentName;
+
     private String role;
 
     public Person() {

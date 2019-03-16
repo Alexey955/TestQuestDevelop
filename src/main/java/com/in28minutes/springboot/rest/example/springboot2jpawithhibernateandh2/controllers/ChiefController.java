@@ -24,12 +24,6 @@ public class ChiefController {
     private EmployeeRepo employeeRepo;
 
     @Autowired
-    private DepartmentRepo departmentRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
     private ChiefRepo chiefRepo;
 
     @GetMapping("/chiefMain")

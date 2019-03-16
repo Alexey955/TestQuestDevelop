@@ -3,6 +3,7 @@ package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.controllers.RegistrationController;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Department;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Employee;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Person;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.User;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.EmployeeRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -47,6 +49,9 @@ public class RegistrationControllerTest {
     @MockBean
     private Model model;
 
+    @MockBean
+    private BindingResult bindingResult;
+
     @Test
     @Transactional
     public void addEmployee(){
@@ -55,7 +60,13 @@ public class RegistrationControllerTest {
         user.setPassword("passwordOne");
         user.setRoles(Collections.singleton(Roles.EMPLOYEE));
 
-        Assert.assertEquals(registrationController.addUser(user, model, "Employee", "departmentName", "firstName", "lastName"), "redirect:/login");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+        person.setDepartmentName("departmentName");
+        person.setRole("Employee");
+
+        Assert.assertEquals(registrationController.addUser(user, bindingResult, person, bindingResult, model /*"Employee", "departmentName", "firstName", "lastName"*/), "redirect:/login");
     }
 
     @Test
@@ -65,7 +76,13 @@ public class RegistrationControllerTest {
         user.setPassword("passwordTwo");
         user.setRoles(Collections.singleton(Roles.CHIEF));
 
-        Assert.assertEquals(registrationController.addUser(user, model, "Chief", "departmentName", "firstName", "lastName"), "redirect:/login");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+        person.setDepartmentName("departmentName");
+        person.setRole("Chief");
+
+        Assert.assertEquals(registrationController.addUser(user, bindingResult, person, bindingResult, model /*"Chief", "departmentName", "firstName", "lastName"*/), "redirect:/login");
     }
 
     @Test
@@ -75,7 +92,13 @@ public class RegistrationControllerTest {
         user.setPassword("passwordThree");
         user.setRoles(Collections.singleton(Roles.ADMIN));
 
-        Assert.assertEquals(registrationController.addUser(user, model, "Admin", "departmentName", "firstName", "lastName"), "redirect:/login");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+        person.setDepartmentName("departmentName");
+        person.setRole("Employee");
+
+        Assert.assertEquals(registrationController.addUser(user, bindingResult, person, bindingResult, model /*"Admin", "departmentName", "firstName", "lastName"*/), "redirect:/login");
     }
 
     @Test
@@ -86,7 +109,7 @@ public class RegistrationControllerTest {
                 .param("firstName", "firstName")
                 .param("lastName", "lastName")
                 .param("departmentName", "departmentName")
-                .param("radioDel", "Employee")
+                .param("role", "Employee")
                 .with(csrf());
 
         this.mockMvc.perform(multipart)

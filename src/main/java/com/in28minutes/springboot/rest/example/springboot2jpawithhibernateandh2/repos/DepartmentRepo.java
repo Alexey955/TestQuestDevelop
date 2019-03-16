@@ -16,7 +16,4 @@ public interface DepartmentRepo extends CrudRepository<Department, Long> {
 
     @Query(value = "select t.departmentName from Department t where t.id = ?1")
     String findDepartmentNameById(Long id);
-
-    @Query(value = "select max(t.departmentName) from Department t")
-    Long findMaxId();
 }

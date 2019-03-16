@@ -1,6 +1,9 @@
 package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.controllers;
 
-import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.*;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Chief;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Employee;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Person;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.User;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.ChiefRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.DepartmentRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.EmployeeRepo;
@@ -9,12 +12,13 @@ import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,11 +81,27 @@ public class AdminController {
     }
 
     @PostMapping("/registrationByAdmin")
-    public String addUser(User user, Model model, @RequestParam String radioDel,
-                          @RequestParam String departmentName, @RequestParam String firstName,
-                          @RequestParam String lastName) {
+    public String addUser(@Valid User user, BindingResult bindingResultUser,
+                          @Valid Person person, BindingResult bindingResultPerson,
+                          Model model) {
 
-        if (!userService.addUser(user, radioDel, firstName, lastName, departmentName)) {
+        if(bindingResultUser.hasErrors() || bindingResultPerson.hasErrors()) {
+            if(bindingResultUser.hasErrors() && bindingResultPerson.hasErrors()){
+                ControllerUtils.addErrorToModelIfBindingResultError(bindingResultUser, model);
+                ControllerUtils.addErrorToModelIfBindingResultError(bindingResultPerson, model);
+                return "createUserPage";
+
+            }else if(bindingResultUser.hasErrors()){
+                ControllerUtils.addErrorToModelIfBindingResultError(bindingResultUser, model);
+                return "createUserPage";
+
+            }else {
+                ControllerUtils.addErrorToModelIfBindingResultError(bindingResultPerson, model);
+                return "createUserPage";
+            }
+        }
+
+        if (!userService.addUser(user, person)) {
             model.addAttribute("usernameError", "User " + user.getUsername() +" exists.");
         }
         return "wallpaperPage";
@@ -107,21 +127,27 @@ public class AdminController {
     }
 
     @PostMapping("/changeUser")
-    public String changeUser(@RequestParam String firstName, @RequestParam String lastName,
+    public String changeUser(@Valid Person person, BindingResult bindingResult, Model model,
                              @ModelAttribute("pickedUser") User userOld) {
+
+        if(bindingResult.hasErrors()) {
+            ControllerUtils.addErrorToModelIfBindingResultError(bindingResult, model);
+
+            return "changeUserPage";
+        }
 
         switch (userOld.getRoles().iterator().next().toString()){
             case "EMPLOYEE":
                 Employee employee = employeeRepo.findFirstById(userOld.getId());
-                employee.setFirstName(firstName);
-                employee.setLastName(lastName);
+                employee.setFirstName(person.getFirstName());
+                employee.setLastName(person.getLastName());
                 employeeRepo.save(employee);
                 break;
 
             case "CHIEF":
                 Chief chief = chiefRepo.findFirstById(userOld.getId());
-                chief.setFirstName(firstName);
-                chief.setLastName(lastName);
+                chief.setFirstName(person.getFirstName());
+                chief.setLastName(person.getLastName());
                 chiefRepo.save(chief);
                 break;
         }

@@ -13,7 +13,7 @@
                         <b>First Name:</b>
                     </div>
                     <input form="registerForm" class="inpTextLog" type="text" name="firstName"/>
-                    <#--<#if passwordError??><div align="center" class="invalid-feedback">${passwordError}</div></#if>-->
+                    <#if firstNameError??><div align="center" class="invalid-feedback">${firstNameError}</div></#if>
                 </td>
             </tr>
             <tr class="trLoginPage">
@@ -22,7 +22,7 @@
                         <b>Last Name:</b>
                     </div>
                     <input form="registerForm" class="inpTextLog" type="text" name="lastName"/>
-                    <#--<#if passwordError??><div align="center" class="invalid-feedback">${passwordError}</div></#if>-->
+                    <#if lastNameError??><div align="center" class="invalid-feedback">${lastNameError}</div></#if>
                 </td>
             </tr>
             <tr class="trLoginPage">

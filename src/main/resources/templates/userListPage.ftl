@@ -11,6 +11,7 @@
                 Department name: ${personList.departmentName},
                 Role: ${personList.role}
                 <a target="_top" href="/pickOperatUser/${personList.id}">pick</a>
+                <br/>
             </div>
         </#list>
         <#else >

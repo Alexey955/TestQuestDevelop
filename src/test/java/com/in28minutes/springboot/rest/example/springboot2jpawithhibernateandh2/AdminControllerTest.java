@@ -3,6 +3,7 @@ package com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.controllers.AdminController;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Department;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Employee;
+import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.Person;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.domains.User;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.repos.EmployeeRepo;
 import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.roles.Roles;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
@@ -55,6 +57,9 @@ public class AdminControllerTest {
     @MockBean
     private Model model;
 
+    @MockBean
+    private BindingResult bindingResult;
+
     @Test
     public void showUserList(){
         User user = new User();
@@ -73,7 +78,13 @@ public class AdminControllerTest {
         user.setPassword("passwordOne");
         user.setRoles(Collections.singleton(Roles.EMPLOYEE));
 
-        Assert.assertEquals(adminController.addUser(user, model, "Employee", "departmentName", "firstName", "lastName"), "wallpaperPage");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+        person.setDepartmentName("departmentName");
+        person.setRole("Employee");
+
+        Assert.assertEquals(adminController.addUser(user, bindingResult, person, bindingResult, model /*"Employee", "departmentName", "firstName", "lastName"*/), "wallpaperPage");
     }
 
     @Test
@@ -82,7 +93,11 @@ public class AdminControllerTest {
         user.setId((long) 10);
         user.setRoles(Collections.singleton(Roles.EMPLOYEE));
 
-        Assert.assertEquals(adminController.changeUser("firstName", "lastName", user), "wallpaperPage");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+
+        Assert.assertEquals(adminController.changeUser(person, bindingResult, model, user), "wallpaperPage");
     }
 
     @Test
@@ -91,7 +106,11 @@ public class AdminControllerTest {
         user.setId((long) 20);
         user.setRoles(Collections.singleton(Roles.CHIEF));
 
-        Assert.assertEquals(adminController.changeUser("firstName", "lastName", user), "wallpaperPage");
+        Person person = new Person();
+        person.setFirstName("firstName");
+        person.setLastName("lastName");
+
+        Assert.assertEquals(adminController.changeUser(person, bindingResult, model, user), "wallpaperPage");
     }
 
     @Test
@@ -120,7 +139,7 @@ public class AdminControllerTest {
                 .param("firstName", "firstName")
                 .param("lastName", "lastName")
                 .param("departmentName", "departmentName")
-                .param("radioDel", "Employee")
+                .param("role", "Employee")
                 .with(csrf());
 
         this.mockMvc.perform(multipart)

@@ -150,6 +150,7 @@
     position: relative;
     left: 18px;
 }
+
 .stringLog {
     /*width: 180px;*/
     position: relative;
@@ -180,6 +181,8 @@
 
 .invalid-feedback {
     color: darkred;
+    /*position: relative;*/
+    /*left: 20px;*/
 }
 
 #h3EditElem {

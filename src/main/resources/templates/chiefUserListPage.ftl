@@ -10,6 +10,7 @@
                     Last name: ${personList.lastName},
                     Department name: ${personList.departmentName},
                     Role: ${personList.role}
+                    <br/>
                 </div>
             </#list>
         <#else >

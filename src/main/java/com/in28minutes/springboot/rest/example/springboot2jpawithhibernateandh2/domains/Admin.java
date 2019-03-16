@@ -7,7 +7,6 @@ import javax.persistence.*;
 public class Admin {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String firstName;
     private String lastName;
