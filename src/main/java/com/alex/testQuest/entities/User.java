@@ -88,4 +88,12 @@ public class User implements UserDetails {
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
     }
+
+    public People getPeople() {
+        return people;
+    }
+
+    public void setPeople(People people) {
+        this.people = people;
+    }
 }

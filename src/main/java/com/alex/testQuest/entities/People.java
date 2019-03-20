@@ -61,4 +61,6 @@ public class People {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+
 }

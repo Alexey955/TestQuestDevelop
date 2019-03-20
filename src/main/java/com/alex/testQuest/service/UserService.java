@@ -1,13 +1,13 @@
 package com.alex.testQuest.service;
 
-import com.alex.testQuest.entities.*;
 import com.alex.testQuest.dto.Person;
+import com.alex.testQuest.entities.Department;
+import com.alex.testQuest.entities.People;
+import com.alex.testQuest.entities.User;
 import com.alex.testQuest.repos.DepartmentRepo;
 import com.alex.testQuest.repos.PeopleRepo;
 import com.alex.testQuest.repos.UserRepo;
 import com.alex.testQuest.roles.Roles;
-//import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.entities.*;
-import com.alex.testQuest.repos.AdminRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,8 +32,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PeopleRepo peopleRepo;
 
-    @Autowired
-    private AdminRepo adminRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

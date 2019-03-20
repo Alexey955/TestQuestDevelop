@@ -2,10 +2,7 @@ package com.alex.testQuest;
 
 import com.alex.testQuest.dto.Person;
 import com.alex.testQuest.controllers.RegistrationController;
-import com.alex.testQuest.entities.Department;
-import com.alex.testQuest.entities.Employee;
 import com.alex.testQuest.entities.User;
-import com.alex.testQuest.repos.EmployeeRepo;
 import com.alex.testQuest.roles.Roles;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,22 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import javax.transaction.Transactional;
 import java.util.Collections;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,9 +31,6 @@ public class RegistrationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private EmployeeRepo employeeRepo;
 
     @Autowired
     private RegistrationController registrationController;

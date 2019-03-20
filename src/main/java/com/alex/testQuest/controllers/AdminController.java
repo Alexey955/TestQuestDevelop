@@ -1,14 +1,11 @@
 package com.alex.testQuest.controllers;
 
 import com.alex.testQuest.dto.Person;
-import com.alex.testQuest.repos.DepartmentRepo;
-import com.alex.testQuest.entities.Chief;
-import com.alex.testQuest.entities.Employee;
+import com.alex.testQuest.entities.People;
 import com.alex.testQuest.entities.User;
-import com.alex.testQuest.repos.ChiefRepo;
-import com.alex.testQuest.repos.EmployeeRepo;
+import com.alex.testQuest.repos.DepartmentRepo;
+import com.alex.testQuest.repos.PeopleRepo;
 import com.alex.testQuest.repos.UserRepo;
-import com.alex.testQuest.roles.Roles;
 import com.alex.testQuest.service.UserService;
 import com.alex.testQuest.utils.ControllerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@SessionAttributes("pickedUser")
+@SessionAttributes("pickedPeople")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminController {
 
-    @Autowired
-    private ChiefRepo chiefRepo;
 
     @Autowired
     private DepartmentRepo departmentRepo;
@@ -38,7 +33,7 @@ public class AdminController {
     private UserRepo userRepo;
 
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private PeopleRepo peopleRepo;
 
     @Autowired
     private UserService userService;
@@ -50,27 +45,19 @@ public class AdminController {
 
     @GetMapping("/showUserList")
     public String showUserList(Model model) {
+
         List<Person> personList = new ArrayList<>();
+        List<People> peopleList = peopleRepo.findAll();
 
-        List<Chief> chiefList = chiefRepo.findAll();
-        for(Chief chief: chiefList){
-            Person person = new Person(chief.getId(), chief.getFirstName(), chief.getLastName());
-            String departmentName = departmentRepo.findDepartmentNameById(chief.getDepartment().getId());
+        for(People people: peopleList){
+            Person person = new Person(people.getId(), people.getFirstName(), people.getLastName());
+            String departmentName = departmentRepo.findDepartmentNameById(people.getDepartment().getId());
             person.setDepartmentName(departmentName);
-            person.setRole(Roles.CHIEF.toString());
+            person.setRole(people.getUser().getRoles().toString());
 
             personList.add(person);
         }
 
-        List<Employee> employeeList = employeeRepo.findAll();
-        for(Employee employee: employeeList){
-            Person person = new Person(employee.getId(), employee.getFirstName(), employee.getLastName());
-            String departmentName = departmentRepo.findDepartmentNameById(employee.getDepartment().getId());
-            person.setDepartmentName(departmentName);
-            person.setRole(Roles.EMPLOYEE.toString());
-
-            personList.add(person);
-        }
         model.addAttribute("personList", personList);
 
         return "userListPage";
@@ -108,28 +95,28 @@ public class AdminController {
         return "wallpaperPage";
     }
 
-    @GetMapping("/pickOperatUser/{user}")
-    public String pickOperatUser(@PathVariable User user, Model model) {
+    @GetMapping("/pickOperatUser/{people}")
+    public String pickOperatUser(@PathVariable People people, Model model) {
 
-        model.addAttribute("pickedUser", user);
+        model.addAttribute("pickedPeople", people);
         return "pickOperatUserPage";
     }
 
     @GetMapping("/deleteUserOrNot")
-    public String deleteUserOrNot(@ModelAttribute("pickedUser") User user) {
+    public String deleteUserOrNot(@ModelAttribute("pickedPeople") People people) {
 
         return "deleteUserOrNotPage";
     }
 
     @GetMapping("/changeUser")
-    public String changeUser(@ModelAttribute("pickedUser") User user) {
+    public String changeUser(@ModelAttribute("pickedPeople") People people) {
 
         return "changeUserPage";
     }
 
     @PostMapping("/changeUser")
     public String changeUser(@Valid Person person, BindingResult bindingResult, Model model,
-                             @ModelAttribute("pickedUser") User userOld) {
+                             @ModelAttribute("pickedPeople") People people) {
 
         if(bindingResult.hasErrors()) {
             ControllerUtils.addErrorToModelIfBindingResultError(bindingResult, model);
@@ -137,34 +124,20 @@ public class AdminController {
             return "changeUserPage";
         }
 
-        switch (userOld.getRoles().iterator().next().toString()){
-            case "EMPLOYEE":
-                Employee employee = employeeRepo.findFirstById(userOld.getId());
-                employee.setFirstName(person.getFirstName());
-                employee.setLastName(person.getLastName());
-                employeeRepo.save(employee);
-                break;
+        people.setFirstName(person.getFirstName());
+        people.setLastName(person.getLastName());
+        peopleRepo.save(people);
 
-            case "CHIEF":
-                Chief chief = chiefRepo.findFirstById(userOld.getId());
-                chief.setFirstName(person.getFirstName());
-                chief.setLastName(person.getLastName());
-                chiefRepo.save(chief);
-                break;
-        }
         return "wallpaperPage";
     }
 
     @Transactional(value = Transactional.TxType.REQUIRED)
     @PostMapping("/deleteTheUser")
-    public String deleteTheUser(@ModelAttribute("pickedUser") User user) {
+    public String deleteTheUser(@ModelAttribute("pickedPeople") People people) {
 
-        switch (user.getRoles().iterator().next().toString()){
-            case "EMPLOYEE": employeeRepo.deleteById(user.getId()); break;
-            case "CHIEF": chiefRepo.deleteById(user.getId()); break;
-        }
-
-        userRepo.deleteById(user.getId());
+        peopleRepo.delete(people);
+        User user = people.getUser();
+        userRepo.delete(user);
 
         return "wallpaperPage";
     }

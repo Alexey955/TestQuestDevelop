@@ -5,7 +5,7 @@
         <form id="deteteTheUser" action="/deleteTheUser" method="post">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
         </form>
-        <form target="_top" id="pickOperatUser" action="/pickOperatUser/${pickedUser.id}" method="get"></form>
+        <form target="_top" id="pickOperatUser" action="/pickOperatUser/${pickedPeople.id}" method="get"></form>
 
         <table id="tableDelUser">
             <tr>
