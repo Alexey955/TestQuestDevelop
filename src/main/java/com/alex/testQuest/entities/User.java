@@ -13,7 +13,6 @@ import java.util.Set;
 @Table(name = "user_table")
 public class User implements UserDetails {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -29,6 +28,9 @@ public class User implements UserDetails {
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
+
+    @OneToOne(mappedBy = "user")
+    private People people;
 
     public Long getId() {
         return id;
@@ -87,4 +89,3 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 }
-

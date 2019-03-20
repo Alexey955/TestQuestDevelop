@@ -20,7 +20,7 @@
                         <div align="center">
                             <b>Employee:</b>
                         </div>
-                        <input form="registerForm" type="radio" class="inpRadioLog" value="Employee" name="role" checked = ""/>
+                        <input form="registerForm" type="radio" class="inpRadioLog" value="EMPLOYEE" name="role" checked = ""/>
                     </td>
                 </tr>
                 <tr class="trLoginPage">
@@ -35,7 +35,7 @@
                         <div align="center">
                             <b>Chief:</b>
                         </div>
-                        <input form="registerForm" type="radio" class="inpRadioLog" value="Chief" name="role"/>
+                        <input form="registerForm" type="radio" class="inpRadioLog" value="CHIEF" name="role"/>
                     </td>
                 </tr>
                 <tr class="trLoginPage">
@@ -50,7 +50,7 @@
                         <div align="center">
                             <b>Admin:</b>
                         </div>
-                        <input form="registerForm" type="radio" class="inpRadioLog" value="Admin" name="role"/>
+                        <input form="registerForm" type="radio" class="inpRadioLog" value="ADMIN" name="role"/>
                     </td>
                 </tr>
                 <tr class="trLoginPage">

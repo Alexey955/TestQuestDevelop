@@ -3,6 +3,7 @@ package com.alex.testQuest.service;
 import com.alex.testQuest.entities.*;
 import com.alex.testQuest.dto.Person;
 import com.alex.testQuest.repos.DepartmentRepo;
+import com.alex.testQuest.repos.PeopleRepo;
 import com.alex.testQuest.repos.UserRepo;
 import com.alex.testQuest.roles.Roles;
 //import com.in28minutes.springboot.rest.example.springboot2jpawithhibernateandh2.entities.*;
@@ -29,6 +30,9 @@ public class UserService implements UserDetailsService {
     private DepartmentRepo departmentRepo;
 
     @Autowired
+    private PeopleRepo peopleRepo;
+
+    @Autowired
     private AdminRepo adminRepo;
 
     @Override
@@ -44,44 +48,55 @@ public class UserService implements UserDetailsService {
         }
 
         Department department = departmentRepo.findByDepartmentName(person.getDepartmentName());
+        People people;
 
-        switch (person.getRole()) {
-            case "Employee":
+        switch (person.getRole()){
+            case "EMPLOYEE":
                 user.setRoles(Collections.singleton(Roles.EMPLOYEE));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Employee employee = new Employee(user.getId(), person.getFirstName(), person.getLastName());
 
                 if(department != null){
-                    department.addEmployee(employee);
                 }else {
-                    department = new Department(user.getId(), person.getDepartmentName());
-                    department.addEmployee(employee);
+                    department = new Department();
+                    department.setDepartmentName(person.getDepartmentName());
                 }
+
                 departmentRepo.save(department);
+
+                people = new People();
+                people.setFirstName(person.getFirstName());
+                people.setLastName(person.getLastName());
+                people.setUser(user);
+                people.setDepartment(department);
+                peopleRepo.save(people);
                 break;
 
-            case "Chief":
+            case "CHIEF":
                 user.setRoles(Collections.singleton(Roles.CHIEF));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Chief chief = new Chief(user.getId(), person.getFirstName(), person.getLastName());
 
                 if(department != null){
-                    department.addChief(chief);
                 }else {
-                    department = new Department(user.getId(), person.getDepartmentName());
-                    department.addChief(chief);
+                    department = new Department();
+                    department.setDepartmentName(person.getDepartmentName());
                 }
+
                 departmentRepo.save(department);
+
+                people = new People();
+                people.setFirstName(person.getFirstName());
+                people.setLastName(person.getLastName());
+                people.setUser(user);
+                people.setDepartment(department);
+                peopleRepo.save(people);
                 break;
 
-            case "Admin":
+            case "ADMIN":
                 user.setRoles(Collections.singleton(Roles.ADMIN));
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 userRepo.save(user);
-                Admin admin = new Admin(user.getId(), person.getFirstName(), person.getLastName());
-                adminRepo.save(admin);
                 break;
         }
 

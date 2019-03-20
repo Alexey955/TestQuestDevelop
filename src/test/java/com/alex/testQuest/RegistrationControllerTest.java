@@ -101,31 +101,31 @@ public class RegistrationControllerTest {
         Assert.assertEquals(registrationController.addUser(user, bindingResult, person, bindingResult, model /*"Admin", "departmentName", "firstName", "lastName"*/), "redirect:/login");
     }
 
-    @Test
-    public void trueEmployeeRegistrationTest() throws Exception {
-        MockHttpServletRequestBuilder multipart = multipart("/registration")
-                .param("username", "Username")
-                .param("password", "Password")
-                .param("firstName", "firstName")
-                .param("lastName", "lastName")
-                .param("departmentName", "departmentName")
-                .param("role", "Employee")
-                .with(csrf());
-
-        this.mockMvc.perform(multipart)
-                .andDo(print())
-                .andExpect(redirectedUrl("/login"));
-
-        this.mockMvc.perform(SecurityMockMvcRequestBuilders.formLogin().user("Username").password("Password"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-
-        Employee employeeTest = new Employee((long) 4, "firstName", "lastName");
-        Department departmentTest = new Department((long) 4, "departmentName");
-        employeeTest.setDepartment(departmentTest);
-
-        Assert.assertEquals(employeeTest, employeeRepo.findFirstById((long) 4));
-    }
+//    @Test
+//    public void trueEmployeeRegistrationTest() throws Exception {
+//        MockHttpServletRequestBuilder multipart = multipart("/registration")
+//                .param("username", "Username")
+//                .param("password", "Password")
+//                .param("firstName", "firstName")
+//                .param("lastName", "lastName")
+//                .param("departmentName", "departmentName")
+//                .param("role", "Employee")
+//                .with(csrf());
+//
+//        this.mockMvc.perform(multipart)
+//                .andDo(print())
+//                .andExpect(redirectedUrl("/login"));
+//
+//        this.mockMvc.perform(SecurityMockMvcRequestBuilders.formLogin().user("Username").password("Password"))
+//                .andDo(print())
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/"));
+//
+//        Employee employeeTest = new Employee((long) 4, "firstName", "lastName");
+//        Department departmentTest = new Department((long) 4, "departmentName");
+//        employeeTest.setDepartment(departmentTest);
+//
+//        Assert.assertEquals(employeeTest, employeeRepo.findFirstById((long) 4));
+//    }
 
 }
